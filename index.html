@@ -125,6 +125,10 @@ ul.bullets li::before{content:'—';position:absolute;left:0;color:rgba(200,150,
 .r-exit{background:rgba(245,238,220,0.07);color:var(--muted);}
 .r-progress{background:rgba(200,150,10,0.1);color:rgba(240,180,40,0.8);}
 
+/* ── FILM ENTRY ── */
+.film-entry{margin-bottom:2.5rem;}
+.film-meta{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;}
+
 /* ── PHOTO GRID ── */
 .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem;}
 .photo-cell{border-radius:8px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .25s;}
@@ -267,12 +271,36 @@ footer span.g{color:var(--gold-bright);}
     </div>
     <div class="sec fly">
       <p class="sec-label">Portfolio</p>
-      <p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;">I Got It — 2026 &nbsp;·&nbsp; Actor</p>
-      <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
-        <img src="Hikingcloseup.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
-        <img src="hiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
-        <img src="tenthiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
+
+      <!-- Film 1: I Got It -->
+      <div class="film-entry">
+        <p class="film-meta">I Got It — 2026 &nbsp;·&nbsp; Actor</p>
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
+          <img src="Hikingcloseup.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
+          <img src="hiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
+          <img src="tenthiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
+        </div>
       </div>
+
+      <!-- Film 2: His Purpose -->
+      <div class="film-entry">
+        <p class="film-meta">His Purpose — 2025 &nbsp;·&nbsp; Director</p>
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
+          <div style="width:100%;height:420px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(245,238,220,0.2)" stroke-width="1.2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+            <span style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)">Image coming soon</span>
+          </div>
+          <div style="width:100%;height:420px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(245,238,220,0.2)" stroke-width="1.2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+            <span style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)">Image coming soon</span>
+          </div>
+          <div style="width:100%;height:420px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(245,238,220,0.2)" stroke-width="1.2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>
+            <span style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)">Image coming soon</span>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="sec fly">
       <p class="sec-label">Leadership</p>
@@ -438,7 +466,6 @@ function flyInContent(pageId){
   var page=document.getElementById(pageId);
   if(!page) return;
   var els=page.querySelectorAll('.fly');
-  // no stagger on initial reveal — just show everything immediately
   for(var i=0;i<els.length;i++) els[i].classList.add('in');
 }
 
@@ -447,12 +474,10 @@ var navLogo=document.getElementById('nav-logo');
 if(navLogo){
   navLogo.addEventListener('click',function(){
     if(!fullyRevealed) return;
-    // slide site back down
     fullyRevealed=false; siteRevealed=false;
     targetPull=0; currentPull=0;
     if(siteEl){siteEl.style.borderRadius='20px 20px 0 0';siteEl.style.overflowY='hidden';}
     if(cur) cur.style.opacity='1';
-    // reset to equity research tab
     document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
     document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
     var researchPage=document.getElementById('page-research');
