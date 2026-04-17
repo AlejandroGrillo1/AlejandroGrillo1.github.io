@@ -20,6 +20,11 @@
   --bg1:#15100a;
   --bg2:#1c160a;
   --radius:12px;
+
+  /* Spring easing — overshoot then settle */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-soft: cubic-bezier(0.22, 1.4, 0.36, 1);
+  --spring-snappy: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;}
@@ -41,7 +46,21 @@ a{color:inherit;text-decoration:none;}
 @keyframes hintFade{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 
 /* ── SITE PANEL ── */
-#site{position:fixed;left:0;right:0;top:100vh;height:100vh;z-index:10;background:var(--bg1);color:var(--ink);overflow-y:hidden;border-radius:20px 20px 0 0;box-shadow:0 -20px 80px rgba(0,0,0,0.5);will-change:top;}
+#site{
+  position:fixed;
+  left:0;right:0;
+  top:100vh;
+  height:100vh;
+  z-index:10;
+  background:var(--bg1);
+  color:var(--ink);
+  overflow-y:hidden;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -20px 80px rgba(0,0,0,0.5);
+  will-change:transform,top;
+}
+
+
 
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:200;background:rgba(21,16,10,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
@@ -57,8 +76,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(21,16,10,0.92);backdrop-fi
 /* ── PAGES ── */
 .page{display:none;max-width:920px;margin:0 auto;padding:4.5rem 2rem 5rem;}
 .page.active{display:block;}
+
+/* ── FLY-IN (used post-reveal for non-home tabs) ── */
 .fly{opacity:0;transform:translateY(28px);transition:opacity .55s ease,transform .55s ease;}
 .fly.in{opacity:1;transform:translateY(0);}
+
+
 
 /* ── HERO ── */
 .hero-tag{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint);margin-bottom:1rem;}
@@ -161,22 +184,22 @@ footer span.g{color:var(--gold-bright);}
       <span class="nav-name" id="nav-logo">Alejandro<span>.</span></span>
       <div class="nav-tabs">
         <button class="tab-btn active" onclick="showPage('research',this)">Equity Research</button>
-        <button class="tab-btn" onclick="showPage('portfolio',this)">Portfolio</button>
         <button class="tab-btn" onclick="showPage('fintech',this)">Fintech</button>
         <button class="tab-btn" onclick="showPage('creative',this)">Creative</button>
+        <button class="tab-btn" onclick="showPage('contact',this)">Contact</button>
       </div>
     </div>
   </nav>
 
   <div class="page active" id="page-research">
-    <p class="hero-tag">Equity Research Analyst · Boston, MA</p>
-    <h1 class="site-h1">Where passion<br>meets the <em style="font-style:normal;color:var(--gold-bright);text-shadow:0 0 25px rgba(240,180,40,0.4),0 0 60px rgba(240,180,40,0.15);">markets</em><span class="accent">.</span></h1>
-    <p class="hero-sub">Finance student at Northeastern (D'Amore-McKim, 2026) with two full-cycle co-ops. SIE certified. Fluent in English and Spanish.</p>
-    <div class="pills">
+    <p class="hero-tag fly">Equity Research Analyst · Boston, MA</p>
+    <h1 class="site-h1 fly">Where passion<br>meets the <em style="font-style:normal;color:var(--gold-bright);text-shadow:0 0 25px rgba(240,180,40,0.4),0 0 60px rgba(240,180,40,0.15);">markets</em><span class="accent">.</span></h1>
+    <p class="hero-sub fly">Finance student at Northeastern (D'Amore-McKim, 2026) with two full-cycle co-ops. SIE certified. Fluent in English and Spanish.</p>
+    <div class="pills fly">
       <span class="pill">📍 Boston, MA</span><span class="pill">📞 858-888-3225</span>
       <span class="pill">✉️ grillo.al@northeastern.edu</span><span class="pill">🔗 linkedin.com/in/grillo-ale</span>
     </div>
-    <div class="sec">
+    <div class="sec fly">
       <p class="sec-label">Experience</p>
       <div class="exp">
         <div><p class="exp-role">Equity Research & Wealth Management Co-op</p><p class="exp-co">Boston Research and Management (AUM $750M) · Manchester-by-the-Sea, MA</p>
@@ -194,7 +217,7 @@ footer span.g{color:var(--gold-bright);}
         <span class="exp-date">Jun 2024 – Dec 2024</span>
       </div>
     </div>
-    <div class="sec">
+    <div class="sec fly">
       <p class="sec-label">Sample coverage</p>
       <table class="cov-table">
         <tr><th>Role</th><th>Firm</th><th>Action</th><th>Result</th></tr>
@@ -203,11 +226,11 @@ footer span.g{color:var(--gold-bright);}
         <tr><td style="font-weight:500;color:var(--ink-strong)">SMA Fund Target</td><td>BRM</td><td>New ~$6M allocation</td><td><span class="rating r-progress">In progress</span></td></tr>
       </table>
     </div>
-    <div class="sec">
+    <div class="sec fly">
       <p class="sec-label">Education</p>
       <div class="edu"><div><p class="edu-school">Northeastern University — D'Amore-McKim School of Business</p><p class="edu-deg">B.S. Finance · Minor: Data Science · GPA 3.6 · Dean's List All Years</p></div><span class="edu-date">2022 – 2026</span></div>
     </div>
-    <div class="sec">
+    <div class="sec fly">
       <p class="sec-label">Skills & tools</p>
       <div class="skills-grid">
         <div><p class="sg-name">Platforms</p><div class="tags"><span class="tag">Bloomberg</span><span class="tag">FactSet</span><span class="tag">Morningstar</span><span class="tag">CoStar</span></div></div>
@@ -220,25 +243,6 @@ footer span.g{color:var(--gold-bright);}
     </div>
   </div>
 
-  <div class="page" id="page-portfolio">
-    <p class="hero-tag fly">Personal Investment Portfolio · 2018 – Present</p>
-    <h1 class="site-h1 fly">GARP investing,<br>real <em>results<span class="accent">.</span></em></h1>
-    <p class="hero-sub fly">Self-directed since age 14. Long, short, options, and swing trades across full market cycles.</p>
-    <div class="stat-grid fly">
-      <div class="stat-card"><p class="stat-label">CAGR (2020–2023)</p><p class="stat-val gold" data-count="26.12" data-suffix="%">0%</p><p class="stat-desc">Compounded annualized</p></div>
-      <div class="stat-card"><p class="stat-label">Alpha vs S&P 500</p><p class="stat-val gold" data-count="16.6" data-prefix="+">0%</p><p class="stat-desc">Same 3-year period</p></div>
-      <div class="stat-card"><p class="stat-label">Strategy</p><p class="stat-val" style="font-size:18px">GARP</p><p class="stat-desc">Active management</p></div>
-      <div class="stat-card"><p class="stat-label">Instruments</p><p class="stat-val" style="font-size:16px;letter-spacing:-.5px">Long · Short</p><p class="stat-desc">Options · Swing</p></div>
-    </div>
-    <div class="sec fly">
-      <p class="sec-label">Approach</p>
-      <div class="cards">
-        <div class="card"><p class="card-title">Stock selection</p><p class="card-desc">Screens for high-quality compounders at reasonable valuations. Prioritizes earnings growth, return on capital, and durable moats over short-term momentum.</p></div>
-        <div class="card"><p class="card-title">Risk management</p><p class="card-desc">Uses short positions and options to hedge downside. Maintains position sizing discipline and cuts losses systematically — no averaging down.</p></div>
-        <div class="card"><p class="card-title">Research edge</p><p class="card-desc">Applies the same institutional-grade process from co-ops at BRM and CFN — earnings revisions, scuttlebutt, and sector-level flow analysis — to personal positions.</p></div>
-      </div>
-    </div>
-  </div>
 
   <div class="page" id="page-fintech">
     <p class="hero-tag fly">Fintech & Data Projects</p>
@@ -248,11 +252,70 @@ footer span.g{color:var(--gold-bright);}
     <div class="sec fly">
       <p class="sec-label">Projects</p>
       <div class="cards">
-        <div class="card"><p class="card-title">Bloomberg Equity List Automator</p><p class="card-sub">Built at CFN · Python</p><p class="card-desc">Automated the equity recommended-list update process by scraping Bloomberg data, cutting a multi-hour manual workflow to minutes.</p><div class="card-tags"><span>Python</span><span>Bloomberg</span><span>Automation</span></div></div>
-        <div class="card"><p class="card-title">Sensitivity Model Suite</p><p class="card-sub">Built at BRM · Excel + Python</p><p class="card-desc">Multi-variable sensitivity models supporting SMA fund due diligence, built for HNW client-specific scenarios with dynamic inputs.</p><div class="card-tags"><span>Excel</span><span>Python</span><span>DCF</span></div></div>
-        <div class="card"><p class="card-title">Clean Energy Cash Flow Models</p><p class="card-sub">Built at Pathway Power · Excel</p><p class="card-desc">20+ financial models projecting cash flows for clean energy development projects, used directly by founding partners.</p><div class="card-tags"><span>Excel</span><span>Modeling</span><span>Energy</span></div></div>
-        <div class="card"><p class="card-title">Equity Research Dashboard</p><p class="card-sub">Personal · In development</p><p class="card-desc">Personal tool aggregating earnings revisions, factor exposure, and price targets across a watchlist.</p><div class="card-tags"><span>Python</span><span>SQL</span><span>Streamlit</span></div></div>
-        <div class="card"><p class="card-title">AI-Augmented Research Pipeline</p><p class="card-sub">Built at BRM · Claude + NotebookLM</p><p class="card-desc">Integrated Claude Code and NotebookLM into the firm's equity research workflow to accelerate 10-K/10-Q analysis and memo drafting.</p><div class="card-tags"><span>Claude</span><span>NotebookLM</span><span>AI</span></div></div>
+        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-screener')">
+          <p class="card-title">Equity Research Screener</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
+          <p class="card-desc">Custom screener pulling live Bloomberg data to filter equities by valuation, growth, and quality factors — built to accelerate the initial idea-generation phase of the research process.</p>
+          <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Claude Code</span></div>
+          <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-pt')">
+          <p class="card-title">Analyst Price Target & Estimate Analysis Tool</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
+          <p class="card-desc">Aggregates and visualizes sell-side price targets and earnings estimate revisions across a coverage universe, surfacing consensus shifts and outlier views at a glance.</p>
+          <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Claude Code</span></div>
+          <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-treasury')">
+          <p class="card-title">Treasury Yield Curve & Essentials Analysis</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
+          <p class="card-desc">Tracks and visualizes the full Treasury yield curve alongside key macro indicators — spreads, inversions, and historical comparisons — to inform top-down fixed income and equity positioning.</p>
+          <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Macro</span><span>Claude Code</span></div>
+          <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
+        </div>
+        <div class="card">
+          <p class="card-title">HTML Equity List Automator</p><p class="card-sub">Built at CFN · Python · HTML</p>
+          <p class="card-desc">Replaced an outdated manual process the firm had been using for years — rebuilt it end-to-end in Python and HTML, cutting hours of weekly upkeep down to a single automated run.</p>
+          <div class="card-tags"><span>Python</span><span>HTML</span><span>Automation</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec fly">
+      <p class="sec-label">Demo Videos</p>
+
+      <!-- Screener -->
+      <div class="film-entry" id="demo-screener">
+        <p class="film-meta">Equity Research Screener &nbsp;·&nbsp; Bloomberg BQNT</p>
+        <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);position:relative;">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(240,180,40,0.25)" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+            <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)">Video coming soon</span>
+          </div>
+          <!-- When ready, replace the div above with: -->
+          <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_ID" frameborder="0" allowfullscreen style="display:block;"></iframe> -->
+        </div>
+      </div>
+
+      <!-- Price Target Tool -->
+      <div class="film-entry" id="demo-pt">
+        <p class="film-meta">Analyst Price Target & Estimate Analysis Tool &nbsp;·&nbsp; Bloomberg BQNT</p>
+        <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);position:relative;">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(240,180,40,0.25)" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+            <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)">Video coming soon</span>
+          </div>
+          <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_ID" frameborder="0" allowfullscreen style="display:block;"></iframe> -->
+        </div>
+      </div>
+
+      <!-- Treasury -->
+      <div class="film-entry" id="demo-treasury">
+        <p class="film-meta">Treasury Yield Curve & Essentials Analysis &nbsp;·&nbsp; Bloomberg BQNT</p>
+        <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);position:relative;">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(240,180,40,0.25)" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+            <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)">Video coming soon</span>
+          </div>
+          <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_ID" frameborder="0" allowfullscreen style="display:block;"></iframe> -->
+        </div>
       </div>
     </div>
   </div>
@@ -271,8 +334,6 @@ footer span.g{color:var(--gold-bright);}
     </div>
     <div class="sec fly">
       <p class="sec-label">Portfolio</p>
-
-      <!-- Film 1: I Got It -->
       <div class="film-entry">
         <p class="film-meta">I Got It — 2026 &nbsp;·&nbsp; Actor</p>
         <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
@@ -281,8 +342,6 @@ footer span.g{color:var(--gold-bright);}
           <img src="tenthiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
         </div>
       </div>
-
-      <!-- Film 2: His Purpose -->
       <div class="film-entry">
         <p class="film-meta">His Purpose — 2025 &nbsp;·&nbsp; Director</p>
         <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
@@ -300,7 +359,6 @@ footer span.g{color:var(--gold-bright);}
           </div>
         </div>
       </div>
-
     </div>
     <div class="sec fly">
       <p class="sec-label">Leadership</p>
@@ -308,6 +366,43 @@ footer span.g{color:var(--gold-bright);}
         <div><p class="exp-role">Sector Director & Office Sector Analyst</p><p class="exp-co">Real Estate Market Roundup Club · Northeastern University</p>
         <ul class="bullets"><li>Contributed to semesterly comprehensive market reports — leasing trends, vacancy rates, and post-COVID recovery.</li><li>Conducts ongoing office market research using CoStar; attends 40+ weekly meetings with guest speakers.</li></ul></div>
         <span class="exp-date">Sep 2024 – Present</span>
+      </div>
+    </div>
+  </div>
+  <div class="page" id="page-contact">
+    <p class="hero-tag fly">Contact</p>
+    <h1 class="site-h1 fly">Let's <em style="font-style:normal;color:var(--gold-bright);text-shadow:0 0 25px rgba(240,180,40,0.4),0 0 60px rgba(240,180,40,0.15);">connect</em><span class="accent">.</span></h1>
+    <p class="hero-sub fly">Reach out directly — always open to conversations about markets, research, and new opportunities.</p>
+    <div class="sec fly">
+      <p class="sec-label">Get in touch</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <a href="mailto:grillo.al@northeastern.edu" style="display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.6rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .2s,box-shadow .2s;" onmouseover="this.style.borderColor='rgba(200,150,10,0.4)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-bright)" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          </div>
+          <div>
+            <p style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:3px;">Email</p>
+            <p style="font-size:15px;font-weight:500;color:var(--ink-strong);">grillo.al@northeastern.edu</p>
+          </div>
+        </a>
+        <a href="tel:8588883225" style="display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.6rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .2s,box-shadow .2s;" onmouseover="this.style.borderColor='rgba(200,150,10,0.4)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-bright)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.1 2.18 2 2 0 012.08 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:3px;">Phone</p>
+            <p style="font-size:15px;font-weight:500;color:var(--ink-strong);">(858) 888-3225</p>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/grillo-ale" target="_blank" style="display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.6rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .2s,box-shadow .2s;" onmouseover="this.style.borderColor='rgba(200,150,10,0.4)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-bright)" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          <div>
+            <p style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:3px;">LinkedIn</p>
+            <p style="font-size:15px;font-weight:500;color:var(--ink-strong);">linkedin.com/in/grillo-ale</p>
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -424,93 +519,208 @@ function frame(){
 window.addEventListener('resize',resize);
 resize(); requestAnimationFrame(frame);
 
-/* ── SCROLL PULL-UP ── */
-var targetPull=0,currentPull=0,siteRevealed=false,fullyRevealed=false;
-var siteEl=document.getElementById('site');
-var landingUI=document.getElementById('landing-ui');
-var scrollHint=document.getElementById('scroll-hint');
-var PULL_DISTANCE=380;
+/* ══════════════════════════════════════════
+   CINEMATIC REVEAL
+   ══════════════════════════════════════════ */
 
-window.addEventListener('wheel',function(e){
-  if(fullyRevealed) return;
-  targetPull=Math.max(0,Math.min(PULL_DISTANCE,targetPull+Math.abs(e.deltaY)*0.8));
-},{passive:true});
-var touchStartY=0;
-window.addEventListener('touchstart',function(e){touchStartY=e.touches[0].clientY;},{passive:true});
-window.addEventListener('touchmove',function(e){
-  if(fullyRevealed) return;
-  var dy=touchStartY-e.touches[0].clientY;
-  touchStartY=e.touches[0].clientY;
-  targetPull=Math.max(0,Math.min(PULL_DISTANCE,targetPull+dy));
-},{passive:true});
+var siteEl     = document.getElementById('site');
+var landingUI  = document.getElementById('landing-ui');
+var scrollHint = document.getElementById('scroll-hint');
+var siteRevealed    = false;
+var revealTriggered = false;
+var inputLocked     = false;
+var revealTimers    = [];   // track all pending timers so we can cancel on reset
 
-function pullLoop(){
-  if(!fullyRevealed){
-    currentPull+=(targetPull-currentPull)*0.09;
-    var p=Math.min(currentPull/PULL_DISTANCE,1);
-    if(siteEl) siteEl.style.top=((1-p)*100)+'vh';
-    if(landingUI) landingUI.style.opacity=Math.max(0,1-p*2.5).toString();
-    if(scrollHint) scrollHint.style.opacity=Math.max(0,1-p*3).toString();
-    if(p>=0.999&&!fullyRevealed){
-      fullyRevealed=true; siteRevealed=true;
-      if(siteEl){siteEl.style.top='0';siteEl.style.borderRadius='0';siteEl.style.overflowY='auto';}
-      if(cur) cur.style.opacity='0';
-      flyInContent('page-research');
-    }
+function clearRevealTimers(){
+  for(var i=0;i<revealTimers.length;i++) clearTimeout(revealTimers[i]);
+  revealTimers = [];
+}
+
+function revealTimer(fn, ms){
+  var t = setTimeout(fn, ms);
+  revealTimers.push(t);
+  return t;
+}
+
+/* ── Spring panel pull-up (JS keyframes via style.top) ── */
+/* Uses a 4-stop spring: shoot past → bounce → settle */
+var PANEL_STOPS = [
+  { pct: 0,    ms: 0   },
+  { pct: -3.5, ms: 480 },  // overshoot
+  { pct: 1.2,  ms: 620 },  // bounce back
+  { pct: 0,    ms: 760 },  // settle
+];
+
+function animatePanelUp(onDone){
+  /* Start position */
+  siteEl.style.transition = 'none';
+  siteEl.style.top = '100vh';
+  siteEl.style.borderRadius = '20px 20px 0 0';
+
+  /* Each stop gets its own transition segment */
+  var stops = PANEL_STOPS;
+  function doStop(i){
+    if(i >= stops.length){ onDone(); return; }
+    var prev = stops[i-1] || stops[0];
+    var curr = stops[i];
+    var dur  = curr.ms - (prev ? prev.ms : 0);
+    /* Small rAF delay so browser paints before we start transitioning */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        var ease = i===1 ? 'cubic-bezier(0.22,1,0.36,1)'
+                 : i===2 ? 'cubic-bezier(0.4,0,0.6,1)'
+                 : 'cubic-bezier(0.25,1,0.5,1)';
+        siteEl.style.transition = 'top '+dur+'ms '+ease+', border-radius '+dur+'ms ease';
+        siteEl.style.top = curr.pct+'vh';
+        if(i===1) siteEl.style.borderRadius = '0';
+        revealTimer(function(){ doStop(i+1); }, dur);
+      });
+    });
   }
-  requestAnimationFrame(pullLoop);
-}
-requestAnimationFrame(pullLoop);
-
-function flyInContent(pageId){
-  var page=document.getElementById(pageId);
-  if(!page) return;
-  var els=page.querySelectorAll('.fly');
-  for(var i=0;i<els.length;i++) els[i].classList.add('in');
+  doStop(1);
 }
 
-/* ── NAV LOGO → BACK TO LANDING ── */
-var navLogo=document.getElementById('nav-logo');
-if(navLogo){
-  navLogo.addEventListener('click',function(){
-    if(!fullyRevealed) return;
-    fullyRevealed=false; siteRevealed=false;
-    targetPull=0; currentPull=0;
-    if(siteEl){siteEl.style.borderRadius='20px 20px 0 0';siteEl.style.overflowY='hidden';}
-    if(cur) cur.style.opacity='1';
-    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-    var researchPage=document.getElementById('page-research');
-    if(researchPage) researchPage.classList.add('active');
-    var firstTab=document.querySelector('.tab-btn');
-    if(firstTab) firstTab.classList.add('active');
-    if(siteEl) siteEl.scrollTo({top:0,behavior:'instant'});
-    document.querySelectorAll('.fly').forEach(function(el){el.classList.remove('in');});
+/* ── Trigger ── */
+function onScrollTrigger(){
+  if(revealTriggered || inputLocked) return;
+  revealTriggered = true;
+  inputLocked     = true;
+  siteRevealed    = true;
+
+  if(landingUI)  { landingUI.style.transition='opacity 0.2s ease'; landingUI.style.opacity='0'; }
+  if(scrollHint) { scrollHint.style.transition='opacity 0.15s ease'; scrollHint.style.opacity='0'; }
+  if(cur)        { cur.style.opacity='0'; }
+
+  animatePanelUp(function(){
+    /* Snap to final revealed state — no more inline styles fighting */
+    siteEl.style.transition  = 'none';
+    siteEl.style.top         = '0';
+    siteEl.style.borderRadius= '0';
+    siteEl.style.overflowY   = 'auto';
+
+    /* Stagger fly-in */
+    flyInContent('page-research');
+
+    /* Unlock after stagger tail */
+    revealTimer(function(){ inputLocked = false; }, 900);
   });
 }
+
+/* ── Listeners ── */
+window.addEventListener('wheel', function(e){
+  if(revealTriggered) return;
+  if(Math.abs(e.deltaY) > 5) onScrollTrigger();
+}, { passive: true });
+
+var touchStartY2 = 0;
+window.addEventListener('touchstart', function(e){
+  touchStartY2 = e.touches[0].clientY;
+}, { passive: true });
+window.addEventListener('touchmove', function(e){
+  if(revealTriggered) return;
+  if(touchStartY2 - e.touches[0].clientY > 8) onScrollTrigger();
+}, { passive: true });
+
+/* Block scroll while locked */
+window.addEventListener('wheel', function(e){ if(inputLocked) e.preventDefault(); }, { passive: false });
+window.addEventListener('touchmove', function(e){ if(inputLocked) e.preventDefault(); }, { passive: false });
+
+/* ── Fly-in helper ── */
+function flyInContent(pageId){
+  var page = document.getElementById(pageId);
+  if(!page) return;
+  var els = page.querySelectorAll('.fly');
+  for(var i=0; i<els.length; i++){
+    (function(el,idx){
+      setTimeout(function(){ el.classList.add('in'); }, 60 + idx*80);
+    })(els[i], i);
+  }
+}
+
+/* ── NAV LOGO → back to landing ── */
+var navLogo = document.getElementById('nav-logo');
+if(navLogo){
+  navLogo.addEventListener('click', function(){
+    if(!siteRevealed) return;
+
+    /* Cancel any in-flight timers */
+    clearRevealTimers();
+
+    /* Hard-reset all state flags */
+    revealTriggered = false;
+    siteRevealed    = false;
+    inputLocked     = false;
+
+    /* Reset panel */
+    siteEl.style.transition   = 'none';
+    siteEl.style.top          = '100vh';
+    siteEl.style.borderRadius = '20px 20px 0 0';
+    siteEl.style.overflowY    = 'hidden';
+    siteEl.scrollTo({ top:0, behavior:'instant' });
+
+    /* Reset ALL fly elements across every page */
+    document.querySelectorAll('.fly').forEach(function(el){ el.classList.remove('in'); });
+
+    /* Reset tabs back to research */
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    var rp = document.getElementById('page-research');
+    if(rp) rp.classList.add('active');
+    var ft = document.querySelector('.tab-btn');
+    if(ft) ft.classList.add('active');
+
+    /* Restore landing */
+    if(landingUI)  { landingUI.style.transition='none'; landingUI.style.opacity='1'; }
+    if(scrollHint) { scrollHint.style.transition='none'; scrollHint.style.opacity='1'; }
+    if(cur)        { cur.style.opacity='1'; }
+  });
+}
+
+/* ── SCROLL TO DEMO ── */
+window.scrollToDemo = function(id){
+  var el = document.getElementById(id);
+  var site = document.getElementById('site');
+  if(!el || !site) return;
+  var elRect = el.getBoundingClientRect();
+  var siteRect = site.getBoundingClientRect();
+  var target = site.scrollTop + (elRect.top - siteRect.top) - 72;
+  site.scrollTo({ top: target, behavior: 'smooth' });
+};
 
 /* ── SITE SCRIPTS ── */
-var glow=document.getElementById('glow');
-document.addEventListener('mousemove',function(e){
+var glow = document.getElementById('glow');
+document.addEventListener('mousemove', function(e){
   if(!siteRevealed||!glow) return;
-  glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px';
+  glow.style.left = e.clientX+'px';
+  glow.style.top  = e.clientY+'px';
 });
 
-window.showPage=function(id,btn){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  var page=document.getElementById('page-'+id);
+window.showPage = function(id, btn){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var page = document.getElementById('page-'+id);
   if(!page||!btn) return;
-  page.classList.add('active'); btn.classList.add('active');
-  if(siteEl) siteEl.scrollTo({top:0,behavior:'smooth'});
-  var els=page.querySelectorAll('.fly');
-  els.forEach(function(el){el.classList.remove('in');});
-  requestAnimationFrame(function(){
-    for(var i=0;i<els.length;i++){
-      (function(el,idx){setTimeout(function(){el.classList.add('in');},60+idx*80);})(els[i],i);
-    }
+  page.classList.add('active');
+  btn.classList.add('active');
+  if(siteEl) siteEl.scrollTo({ top:0, behavior:'smooth' });
+
+  /* Snap elements to invisible instantly (no transition), then fade in */
+  var els = page.querySelectorAll('.fly');
+  els.forEach(function(el){
+    el.style.transition = 'none';
+    el.classList.remove('in');
   });
-  if(id==='portfolio') setTimeout(animateCounters,300);
+  /* One rAF to paint the invisible state, then restore transition and stagger in */
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      els.forEach(function(el){ el.style.transition = ''; });
+      for(var i=0; i<els.length; i++){
+        (function(el,idx){ setTimeout(function(){ el.classList.add('in'); }, 60+idx*80); })(els[i],i);
+      }
+    });
+  });
+
+
 };
 
 function animateCounters(){
