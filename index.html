@@ -92,6 +92,8 @@ h1.site-h1 .accent{color:var(--gold-bright);}
 .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:3.5rem;}
 .pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;border:1px solid var(--border);border-radius:100px;padding:5px 13px;color:var(--muted);cursor:default;transition:all .2s;}
 .pill:hover{border-color:var(--gold);color:var(--ink-strong);}
+.pill-link{cursor:pointer;text-decoration:none;}
+.pill-link:hover{border-color:var(--gold-bright);color:var(--gold-bright);background:var(--gold-dim);box-shadow:0 0 18px rgba(240,180,40,0.15);}
 
 /* ── SECTIONS ── */
 .sec{margin-bottom:3.5rem;}
@@ -196,8 +198,8 @@ footer span.g{color:var(--gold-bright);}
     <h1 class="site-h1 fly">Where passion<br>meets the <em style="font-style:normal;color:var(--gold-bright);text-shadow:0 0 25px rgba(240,180,40,0.4),0 0 60px rgba(240,180,40,0.15);">markets</em><span class="accent">.</span></h1>
     <p class="hero-sub fly">Finance student at Northeastern (D'Amore-McKim, 2026) with two full-cycle co-ops. SIE certified.</p>
     <div class="pills fly">
-      <span class="pill">📍 Boston, MA · San Diego, CA · New York, NY</span><span class="pill">📞 858-888-3225</span>
-      <span class="pill">✉️ Alejandro.grillo98@gmail.com</span><span class="pill">🔗 linkedin.com/in/grillo-ale</span>
+      <span class="pill">📍 Boston, MA · San Diego, CA · New York, NY</span><a href="tel:8588883225" class="pill pill-link">📞 858-888-3225</a>
+      <a href="mailto:Alejandro.grillo98@gmail.com" class="pill pill-link">✉️ Alejandro.grillo98@gmail.com</a><a href="https://linkedin.com/in/grillo-ale" target="_blank" rel="noopener" class="pill pill-link">🔗 linkedin.com/in/grillo-ale</a>
     </div>
     <div class="sec fly">
       <p class="sec-label">Experience</p>
@@ -257,7 +259,7 @@ footer span.g{color:var(--gold-bright);}
     <p class="hero-tag fly">Fintech & Data Projects</p>
     <h1 class="site-h1 fly">Building what<br>I want to <em style="font-style:normal;color:var(--gold-bright);text-shadow:0 0 25px rgba(240,180,40,0.4),0 0 60px rgba(240,180,40,0.15);">analyze</em><span class="accent">.</span></h1>
     <p class="hero-sub fly">Automation tools, data pipelines, and research infrastructure built with Python, SQL, and AI.</p>
-    <div class="pills fly"><span class="pill">🔗 github.com/grillo-ale</span><span class="pill">✉️ Alejandro.grillo98@gmail.com</span></div>
+    <div class="pills fly"><a href="mailto:Alejandro.grillo98@gmail.com" class="pill pill-link">✉️ Alejandro.grillo98@gmail.com</a></div>
     <div class="sec fly">
       <p class="sec-label">Projects</p>
       <div class="cards">
@@ -267,17 +269,22 @@ footer span.g{color:var(--gold-bright);}
           <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Claude Code</span></div>
           <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
         </div>
-        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-pt')">
-          <p class="card-title">Analyst Price Target & Estimate Analysis Tool</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
-          <p class="card-desc">Aggregates and visualizes sell-side price targets and earnings estimate revisions across a coverage universe, surfacing consensus shifts and outlier views at a glance.</p>
+        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-estimate')">
+          <p class="card-title">Estimate Analysis Tool</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
+          <p class="card-desc">Aggregates and visualizes sell-side earnings estimate revisions across a coverage universe, surfacing consensus shifts and outlier views at a glance.</p>
           <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Claude Code</span></div>
           <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
         </div>
-        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-treasury')">
+        <div class="card" style="cursor:pointer;" onclick="scrollToDemo('demo-pt')">
+          <p class="card-title">Analyst Price Target Tool</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
+          <p class="card-desc">Aggregates and visualizes sell-side price targets across a coverage universe, highlighting consensus, dispersion, and momentum in analyst views.</p>
+          <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Claude Code</span></div>
+          <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
+        </div>
+        <div class="card">
           <p class="card-title">Treasury Yield Curve & Essentials Analysis</p><p class="card-sub">Built at BRM · Python · Bloomberg BQNT</p>
           <p class="card-desc">Tracks and visualizes the full Treasury yield curve alongside key macro indicators — spreads, inversions, and historical comparisons — to inform top-down fixed income and equity positioning.</p>
           <div class="card-tags"><span>Python</span><span>Bloomberg</span><span>BQNT</span><span>Macro</span><span>Claude Code</span></div>
-          <p style="font-size:11px;color:var(--gold);margin-top:10px;letter-spacing:.08em;">▶ Watch demo</p>
         </div>
         <div class="card">
           <p class="card-title">HTML Equity List Automator</p><p class="card-sub">Built at CFN · Python · HTML</p>
@@ -298,22 +305,19 @@ footer span.g{color:var(--gold-bright);}
         </div>
       </div>
 
-      <!-- Price Target Tool -->
-      <div class="film-entry" id="demo-pt">
-        <p class="film-meta">Analyst Price Target & Estimate Analysis Tool &nbsp;·&nbsp; Bloomberg BQNT</p>
+      <!-- Estimate Analysis -->
+      <div class="film-entry" id="demo-estimate">
+        <p class="film-meta">Estimate Analysis Tool &nbsp;·&nbsp; Bloomberg BQNT</p>
         <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);position:relative;">
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HETN5zP_c6o" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;"></iframe>
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/kIV6Bq8YknQ" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;"></iframe>
         </div>
       </div>
 
-      <!-- Treasury -->
-      <div class="film-entry" id="demo-treasury">
-        <p class="film-meta">Treasury Yield Curve & Essentials Analysis &nbsp;·&nbsp; Bloomberg BQNT</p>
+      <!-- Price Target Tool -->
+      <div class="film-entry" id="demo-pt">
+        <p class="film-meta">Analyst Price Target Tool &nbsp;·&nbsp; Bloomberg BQNT</p>
         <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);position:relative;">
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(240,180,40,0.25)" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
-            <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)">Video coming soon</span>
-          </div>
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HETN5zP_c6o" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="display:block;"></iframe>
         </div>
       </div>
     </div>
