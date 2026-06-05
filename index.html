@@ -149,6 +149,8 @@ ul.bullets li::before{content:'—';position:absolute;left:0;color:rgba(200,150,
 .r-buy{background:rgba(200,150,10,0.15);color:var(--gold-bright);}
 .r-exit{background:rgba(245,238,220,0.07);color:var(--muted);}
 .r-progress{background:rgba(200,150,10,0.1);color:rgba(240,180,40,0.8);}
+.live-dot{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;color:#ff5a5a;background:rgba(255,70,70,0.12);border:1px solid rgba(255,70,70,0.35);border-radius:4px;padding:1px 5px;margin-right:8px;vertical-align:middle;text-transform:uppercase;animation:livePulse 1.8s ease-in-out infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:0.45;}}
 
 /* ── FILM ENTRY ── */
 .film-entry{margin-bottom:2.5rem;}
@@ -223,8 +225,8 @@ footer span.g{color:var(--gold-bright);}
       <p class="sec-label">Sample coverage</p>
       <table class="cov-table">
         <tr><th>Coverage</th><th>Firm</th><th>Action</th><th>Result</th></tr>
-        <tr><td style="font-weight:500;color:var(--ink-strong)">Chipotle (CMG)</td><td>CFN / LPL</td><td>Sell pitch + final research report</td><td><span class="rating r-exit" data-live="CMG" data-entry="57" data-mode="drop">~40% drop avoided</span></td></tr>
-        <tr><td style="font-weight:500;color:var(--ink-strong)">Micron (MU)</td><td>BRM</td><td>Short-term thesis · in-depth report</td><td><span class="rating r-buy" data-live="MU" data-entry="350" data-mode="gain">Up ~70%</span></td></tr>
+        <tr><td style="font-weight:500;color:var(--ink-strong)">Chipotle (CMG)</td><td>CFN / LPL</td><td>Sell pitch + final research report</td><td><span class="live-dot">live</span><span class="rating r-exit" data-live="CMG" data-entry="57" data-mode="drop">~40% drop avoided</span></td></tr>
+        <tr><td style="font-weight:500;color:var(--ink-strong)">Semiconductor Memory Sector — Full Coverage</td><td>BRM</td><td>Covered all major industry names</td><td><span class="live-dot">live</span><span class="rating r-buy" data-live="MU" data-entry="350" data-mode="gain">Up ~70%</span></td></tr>
         <tr><td style="font-weight:500;color:var(--ink-strong)">27 Equities</td><td>CFN / LPL</td><td>Buy / Sell recs</td><td><span class="rating r-buy">+19.84% alpha</span></td></tr>
         <tr><td style="font-weight:500;color:var(--ink-strong)">BRM Coverage</td><td>BRM</td><td>New ~$6M allocation</td><td><span class="rating r-progress">In progress</span></td></tr>
       </table>
@@ -720,7 +722,9 @@ function fmtPct(n){
 
 function loadLiveQuotes(){
   var els = document.querySelectorAll('[data-live]');
-  if(!els.length || !FINNHUB_KEY || FINNHUB_KEY === 'YOUR_FINNHUB_KEY') return;
+  if(!els.length){ console.warn('[live] no [data-live] elements found'); return; }
+  if(!FINNHUB_KEY || FINNHUB_KEY === 'YOUR_FINNHUB_KEY'){ console.warn('[live] no API key set'); return; }
+  if(location.protocol === 'file:'){ console.warn('[live] running from file:// — fetch is blocked by the browser. Serve over http(s) or test on GitHub Pages.'); }
 
   els.forEach(function(el){
     var sym   = el.getAttribute('data-live');
@@ -728,10 +732,14 @@ function loadLiveQuotes(){
     var mode  = el.getAttribute('data-mode'); // 'gain' or 'drop'
 
     fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(sym)+'&token='+FINNHUB_KEY)
-      .then(function(r){ return r.json(); })
+      .then(function(r){
+        if(!r.ok){ console.warn('[live] '+sym+' HTTP '+r.status+' — '+(r.status===401||r.status===403?'check API key / plan':r.statusText)); }
+        return r.json();
+      })
       .then(function(d){
+        console.log('[live] '+sym+' response:', d);
         var price = d && d.c;
-        if(!price || price <= 0) return; // keep static fallback
+        if(!price || price <= 0){ console.warn('[live] '+sym+' no price in response — keeping static text'); return; }
         var pct, label;
         if(mode === 'drop'){
           pct = (entry - price) / entry * 100;        // % decline avoided vs sell price
@@ -740,10 +748,10 @@ function loadLiveQuotes(){
           pct = (price - entry) / entry * 100;        // % gain vs buy price
           label = (pct>=0?'Up ':'Down ') + Math.abs(pct).toFixed(1) + '%';
         }
-        el.textContent = label;
-        el.title = sym + ' live $' + price.toFixed(2) + ' · entry $' + entry.toFixed(2);
+        var numEl = el.querySelector('.live-num') || el;
+        numEl.textContent = label;        el.title = sym + ' live $' + price.toFixed(2) + ' · entry $' + entry.toFixed(2);
       })
-      .catch(function(){ /* leave static fallback in place */ });
+      .catch(function(err){ console.warn('[live] '+sym+' fetch failed:', err.message, '— keeping static text'); });
   });
 }
 loadLiveQuotes();
