@@ -228,7 +228,7 @@ footer span.g{color:var(--gold-bright);}
         <tr><td style="font-weight:500;color:var(--ink-strong)">27 Equities</td><td>CFN / LPL</td><td>Jan 2025</td><td>Buy / Sell recs</td><td><span class="live-dot">live</span><span class="rating r-buy">+39.91% alpha</span></td></tr>
         <tr><td style="font-weight:500;color:var(--ink-strong)">Chipotle (CMG)</td><td>CFN / LPL</td><td>Jun 2025</td><td>Sell pitch + final research report</td><td><span class="live-dot">live</span><span class="rating r-exit" data-live="CMG" data-entry="57" data-mode="drop">~40% drop avoided</span></td></tr>
         <tr><td style="font-weight:500;color:var(--ink-strong)">20 Equities</td><td>BRM</td><td>Jan 2026</td><td>Buy / Sell recs</td><td><span class="live-dot">live</span><span class="rating r-buy">+12.86% alpha</span></td></tr>
-        <tr><td style="font-weight:500;color:var(--ink-strong)">Semiconductor Memory Sector</td><td>BRM</td><td>Feb 2026</td><td>Report covering all major industry names</td><td><span class="live-dot">live</span><span class="rating r-buy" data-live="MU" data-entry="350" data-mode="gain">+ ~70%</span></td></tr>
+        <tr><td style="font-weight:500;color:var(--ink-strong)">Semiconductor Memory Sector</td><td>BRM</td><td>Feb 2026</td><td>Report covering all major industry names</td><td><span class="live-dot">live</span><span class="rating r-buy" data-live="MU" data-entry="350" data-mode="gain">+ …%</span></td></tr>
         <tr><td style="font-weight:500;color:var(--ink-strong)">BRM New Portfolio Additions</td><td>BRM</td><td>Jun 2026</td><td>Consumer Disc. ~$6M allocation</td><td><span class="rating r-progress">In progress</span></td></tr>
       </table>
     </div>
@@ -747,10 +747,11 @@ function loadLiveQuotes(){
           label = fmtPct(pct).replace('+','') + ' drop avoided';
         } else {
           pct = (price - entry) / entry * 100;        // % gain vs buy price
-          label = (pct>=0?'Up ':'Down ') + Math.abs(pct).toFixed(1) + '%';
+          label = (pct>=0?'+ ':'- ') + Math.abs(pct).toFixed(1) + '%';
         }
         var numEl = el.querySelector('.live-num') || el;
-        numEl.textContent = label;        el.title = sym + ' live $' + price.toFixed(2) + ' · entry $' + entry.toFixed(2);
+        numEl.textContent = label;
+        el.title = sym + ' live $' + price.toFixed(2) + ' · entry $' + entry.toFixed(2);
       })
       .catch(function(err){ console.warn('[live] '+sym+' fetch failed:', err.message, '— keeping static text'); });
   });
