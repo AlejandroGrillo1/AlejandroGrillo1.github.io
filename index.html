@@ -171,7 +171,7 @@ ul.bullets li::before{content:'—';position:absolute;left:0;color:rgba(200,150,
 .photo-cell.tall .photo-placeholder{min-height:270px;}.photo-cell.wide .photo-placeholder{min-height:110px;}
 
 /* ── CURSOR GLOW ── */
-.cursor-glow{pointer-events:none;position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,10,0.04) 0%,transparent 70%);transform:translate(-50%,-50%);z-index:0;}
+.cursor-glow{pointer-events:none;position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,10,0.06) 0%,transparent 70%);transform:translate(-50%,-50%);z-index:9;opacity:0;transition:opacity .4s;}
 
 footer{border-top:1px solid var(--border);max-width:920px;margin:0 auto;padding:1.5rem 2rem;font-size:12px;color:var(--faint);display:flex;justify-content:space-between;}
 footer span.g{color:var(--gold-bright);}
@@ -188,7 +188,6 @@ footer span.g{color:var(--gold-bright);}
 <div id="scroll-hint"><span>scroll</span><div class="chevron"></div></div>
 
 <div id="site">
-  <div class="cursor-glow" id="glow"></div>
   <nav>
     <div class="nav-inner">
       <span class="nav-name" id="nav-logo">Alejandro<span>.</span></span>
@@ -352,8 +351,8 @@ footer span.g{color:var(--gold-bright);}
           <p class="film-sub">Actor <span class="film-year">2026</span></p>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
-          <img src="Hikingcloseup.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
           <img src="hiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
+          <img src="Hikingcloseup.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
           <img src="tenthiking.jpg" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:8px;">
         </div>
       </div>
@@ -419,6 +418,7 @@ footer span.g{color:var(--gold-bright);}
   </div>
   <footer><span>Alejandro Grillo</span><span>Built with HTML & CSS · GitHub Pages · Made with <span class="g">♥</span></span></footer>
 </div>
+<div class="cursor-glow" id="glow"></div>
 <div id="cur"></div>
 
 <script>
@@ -665,6 +665,7 @@ if(navLogo){
     if(landingUI)  { landingUI.style.transition='none'; landingUI.style.opacity='1'; }
     if(scrollHint) { scrollHint.style.transition='none'; scrollHint.style.opacity='1'; }
     if(cur)        { cur.style.opacity='1'; }
+    if(glow)       { glow.style.opacity='0'; }
   });
 }
 
@@ -681,6 +682,7 @@ window.scrollToDemo = function(id){
 var glow = document.getElementById('glow');
 document.addEventListener('mousemove', function(e){
   if(!siteRevealed||!glow) return;
+  glow.style.opacity = '1';
   glow.style.left = e.clientX+'px';
   glow.style.top  = e.clientY+'px';
 });
