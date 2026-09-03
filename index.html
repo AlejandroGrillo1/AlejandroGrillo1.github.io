@@ -778,9 +778,11 @@ function slidePanel(el, stops, onDone){
   doStop(1);
 }
 
+var sampleLoaded = false;
+
 window.openSample = function(){
   if(!sampleOverlay) return;
-  if(samplePdfFrame && !samplePdfFrame.src) samplePdfFrame.src = PDF_SRC;
+  if(samplePdfFrame && !sampleLoaded){ samplePdfFrame.src = PDF_SRC; sampleLoaded = true; }
   sampleOverlay.style.display = 'flex';
   sampleOverlay.style.transition = 'none';
   sampleOverlay.style.top = '100%';
