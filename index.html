@@ -175,6 +175,21 @@ ul.bullets li::before{content:'—';position:absolute;left:0;color:rgba(200,150,
 
 footer{border-top:1px solid var(--border);max-width:920px;margin:0 auto;padding:1.5rem 2rem;font-size:12px;color:var(--faint);display:flex;justify-content:space-between;}
 footer span.g{color:var(--gold-bright);}
+
+/* ── SAMPLE REPORT OVERLAY ── */
+#sample-overlay{
+  position:fixed;left:0;right:0;top:100%;height:100vh;z-index:300;
+  background:var(--bg1);display:none;flex-direction:column;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -20px 80px rgba(0,0,0,0.5);
+  will-change:transform,top;
+}
+.sample-bar{position:sticky;top:0;z-index:2;background:rgba(21,16,10,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-radius:20px 20px 0 0;}
+.sample-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);border:1px solid var(--border);border-radius:100px;padding:6px 14px;background:transparent;cursor:pointer;font-family:inherit;transition:all .2s;}
+.sample-back:hover{border-color:var(--gold-bright);color:var(--gold-bright);background:var(--gold-dim);}
+.sample-title{font-size:13px;color:var(--ink);opacity:.7;letter-spacing:.05em;}
+.sample-pdf-wrap{flex:1;padding:16px;min-height:0;}
+.sample-pdf-wrap iframe{width:100%;height:100%;border:1px solid var(--border);border-radius:10px;background:#1c160a;}
 </style>
 </head>
 <body>
@@ -214,6 +229,9 @@ footer span.g{color:var(--gold-bright);}
         <div><p class="exp-role">Buy-Side Equity Research Co-op</p><p class="exp-co">Boston Research and Management (AUM $1B) · Manchester-by-the-Sea, MA</p>
         <ul class="bullets"><li>Led recent research on an equity addition targeting <strong style="color:var(--gold-bright);text-shadow:0 0 18px rgba(240,180,40,0.45),0 0 40px rgba(240,180,40,0.18);">~2% firmwide allocation</strong> (~$4.5M AUM)</li><li>Researched AI, automation, and semiconductor ETFs added to the platform and allocated ~2% to participating clients.</li><li>Authored an in-depth initiation report on memory semiconductor names; flagged names have since appreciated <strong style="color:var(--gold-bright)">160%+</strong>.</li><li>Built Python dashboards in Bloomberg BQNT to automate analyst workflow, increasing idea generation speed.</li><li>Built income statement and sensitivity analysis models for a value-oriented SMA serving HNW clients.</li></ul></div>
         <span class="exp-date">Jan 2026 – Jun 2026</span>
+      </div>
+      <div class="fly" style="margin:-1.4rem 0 2.4rem;">
+        <button onclick="openSample()" class="pill pill-link" style="border:1px solid var(--border);background:transparent;font-family:inherit;">📄 Sample Work — Memory Report</button>
       </div>
       <div class="exp">
         <div><p class="exp-role">Investment Management & Equity Research Co-op</p><p class="exp-co">Commonwealth Financial Network / LPL Financial (AUM $305B) · Boston, MA</p>
@@ -417,6 +435,15 @@ footer span.g{color:var(--gold-bright);}
     </div>
   </div>
   <footer><span>Alejandro Grillo</span><span>Built with HTML & CSS · GitHub Pages · Made with <span class="g">♥</span></span></footer>
+</div>
+<div id="sample-overlay">
+  <div class="sample-bar">
+    <button class="sample-back" onclick="closeSample()">← Back</button>
+    <span class="sample-title">Sample Work — Memory Report</span>
+  </div>
+  <div class="sample-pdf-wrap">
+    <iframe id="sample-pdf-frame" src="" title="Sample Work Report"></iframe>
+  </div>
 </div>
 <div class="cursor-glow" id="glow"></div>
 <div id="cur"></div>
@@ -711,6 +738,60 @@ window.showPage = function(id, btn){
   });
 
 
+};
+
+/* ── SAMPLE REPORT OVERLAY: slide up + bounce, same feel as the landing reveal ── */
+var sampleOverlay = document.getElementById('sample-overlay');
+var samplePdfFrame = document.getElementById('sample-pdf-frame');
+var PDF_SRC = 'sample-work-report.pdf';
+
+var OPEN_STOPS = [
+  { pct: 100,  ms: 0   },
+  { pct: -3.5, ms: 480 },
+  { pct: 1.2,  ms: 620 },
+  { pct: 0,    ms: 760 },
+];
+var CLOSE_STOPS = [
+  { pct: 0,   ms: 0   },
+  { pct: 3,   ms: 260 },
+  { pct: 100, ms: 520 },
+];
+
+function slidePanel(el, stops, onDone){
+  var timers = [];
+  function doStop(i){
+    if(i >= stops.length){ if(onDone) onDone(); return; }
+    var prev = stops[i-1] || stops[0];
+    var curr = stops[i];
+    var dur  = curr.ms - (prev ? prev.ms : 0);
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        var ease = i===1 ? 'cubic-bezier(0.22,1,0.36,1)'
+                 : i===2 ? 'cubic-bezier(0.4,0,0.6,1)'
+                 : 'cubic-bezier(0.25,1,0.5,1)';
+        el.style.transition = 'top '+dur+'ms '+ease;
+        el.style.top = curr.pct+'%';
+        timers.push(setTimeout(function(){ doStop(i+1); }, dur));
+      });
+    });
+  }
+  doStop(1);
+}
+
+window.openSample = function(){
+  if(!sampleOverlay) return;
+  if(samplePdfFrame && !samplePdfFrame.src) samplePdfFrame.src = PDF_SRC;
+  sampleOverlay.style.display = 'flex';
+  sampleOverlay.style.transition = 'none';
+  sampleOverlay.style.top = '100%';
+  slidePanel(sampleOverlay, OPEN_STOPS);
+};
+
+window.closeSample = function(){
+  if(!sampleOverlay) return;
+  slidePanel(sampleOverlay, CLOSE_STOPS, function(){
+    sampleOverlay.style.display = 'none';
+  });
 };
 
 function animateCounters(){
